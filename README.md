@@ -6,6 +6,13 @@ This repository contains code for classifying lung cancer images into four categ
 3. **Large Cell Carcinoma**  
 4. **Squamous Cell Carcinoma**
 
+Here is a demonstration of the model in action:
+
+<video width="600" controls>
+  <source src="results.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## Table of Contents
 - [Dataset](#dataset)
 - [Dependencies](#dependencies)
