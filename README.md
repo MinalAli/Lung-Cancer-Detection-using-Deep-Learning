@@ -159,17 +159,6 @@ The model's performance can be monitored through:
 
 The trained model is saved as 'trained_lung_cancer_model.keras' and can be loaded for inference.
 
-## Results
-
-The video shows:
-- Model predictions on various test images
-- Visualization of classification results
-- Performance metrics and accuracy scores
-
-[Watch the video](https://youtu.be/xutlsjAK_io)
-
-The video demonstrates the model's ability to accurately classify different types of lung cancer from CT scan images, showcasing its potential as a diagnostic aid tool.
-
 ## Contributing
 
 Feel free to submit issues and enhancement requests!
