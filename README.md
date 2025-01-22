@@ -1,61 +1,177 @@
-# Lung Cancer Classification Using Deep Learning
+# Lung Cancer Classification using Deep Learning
 
-This repository contains code for classifying lung cancer images into four categories using a convolutional neural network (CNN) with transfer learning. The project employs the Xception model, fine-tuned for this task, leveraging TensorFlow and Keras.This project uses deep learning to classify lung cancer images into the following categories:  
-1. **Normal**  
-2. **Adenocarcinoma**  
-3. **Large Cell Carcinoma**  
-4. **Squamous Cell Carcinoma**
+This project implements a deep learning model for classifying different types of lung cancer using medical imaging data. The model utilizes transfer learning with the Xception architecture to classify lung CT scans into four categories: normal, adenocarcinoma, large cell carcinoma, and squamous cell carcinoma.
+
+## Table of Contents
+- [Dependencies](#dependencies)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Dataset Organization](#dataset-organization)
+- [Model Architecture](#model-architecture)
+- [Training Process](#training-process)
+- [Usage](#usage)
+- [Model Performance](#model-performance)
+- [Results](#results)
+
+## Dependencies
+
+```bash
+# Core Libraries
+tensorflow
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+```
+
+## Project Structure
+
+```
+.
+├── Lung_Cancer_Prediction.py
+├── README.md
+├── dataset
+│ ├── train
+│ │ ├── adenocarcinoma_left.lower.lobe_T2_N0_M0_Ib
+│ │ ├── large.cell.carcinoma_left.hilum_T2_N2_M0_IIIa
+│ │ ├── normal
+│ │ └── squamous.cell.carcinoma_left.hilum_T1_N2_M0_IIIa
+│ ├── test
+│ │ ├── adenocarcinoma_left.lower.lobe_T2_N0_M0_Ib
+│ │ ├── large.cell.carcinoma_left.hilum_T2_N2_M0_IIIa
+│ │ ├── normal
+│ │ └── squamous.cell.carcinoma_left.hilum_T1_N2_M0_IIIa
+│ └── valid
+│ ├── adenocarcinoma_left.lower.lobe_T2_N0_M0_Ib
+│ ├── large.cell.carcinoma_left.hilum_T2_N2_M0_IIIa
+│ ├── normal
+│ └── squamous.cell.carcinoma_left.hilum_T1_N2_M0_IIIa
+└── best_model.keras
+```
+
+## Installation
+
+1. Clone the repository
+2. Install the required dependencies:
+```bash
+pip install tensorflow numpy pandas matplotlib seaborn scikit-learn
+```
+
+## Dataset Organization
+
+The dataset should be organized in the following structure:
+- Training data: `./dataset/train/`
+- Testing data: `./dataset/test/`
+- Validation data: `./dataset/valid/`
+
+Each directory contains subdirectories for the four classes:
+- Normal scans
+- Adenocarcinoma
+- Large cell carcinoma
+- Squamous cell carcinoma
+
+## Model Architecture
+
+The model uses transfer learning with the following architecture:
+
+```python
+# Base Model: Xception (pre-trained on ImageNet)
+pretrained_model = tf.keras.applications.Xception(
+    weights='imagenet',
+    include_top=False,
+    input_shape=[350, 350, 3]
+)
+pretrained_model.trainable = False
+
+# Additional layers for classification
+model = Sequential([
+    pretrained_model,
+    GlobalAveragePooling2D(),
+    Dense(4, activation='softmax')
+])
+```
+
+## Training Process
+
+1. Image Preprocessing:
+   - Images are resized to 350x350 pixels
+   - Pixel values are normalized to [0,1]
+   - Data augmentation includes horizontal flipping for training data
+
+```python
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    horizontal_flip=True
+)
+```
+
+2. Training Configuration:
+   - Batch size: 8
+   - Learning rate reduction on plateau
+   - Early stopping to prevent overfitting
+   - Model checkpointing to save the best model
+
+```python
+# Training callbacks
+learning_rate_reduction = ReduceLROnPlateau(
+    monitor='loss',
+    patience=5,
+    factor=0.5,
+    min_lr=0.000001
+)
+early_stops = EarlyStopping(
+    monitor='loss',
+    patience=6,
+    mode='auto'
+)
+```
+
+## Usage
+
+To classify a new image:
+
+```python
+def load_and_preprocess_image(img_path, target_size=(350, 350)):
+    img = image.load_img(img_path, target_size=target_size)
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array /= 255.0
+    return img_array
+
+# Load and predict
+img = load_and_preprocess_image('path_to_image.jpg')
+predictions = model.predict(img)
+predicted_class = np.argmax(predictions[0])
+```
+
+## Model Performance
+
+The model's performance can be monitored through:
+- Training and validation accuracy curves
+- Training and validation loss curves
+- Final training accuracy
+- Final validation accuracy
+
+The trained model is saved as 'trained_lung_cancer_model.keras' and can be loaded for inference.
+
+## Results
+
+The video shows:
+- Model predictions on various test images
+- Visualization of classification results
+- Performance metrics and accuracy scores
+
+## 4. Video Demonstration
 
 Here is a demonstration of the model in action:
 
-<video width="600" controls>
-  <source src="results.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[Watch the video](https://youtu.be/xutlsjAK_io)
 
-## Table of Contents
-- [Dataset](#dataset)
-- [Dependencies](#dependencies)
-- [Project Structure](#project-structure)
+The video demonstrates the model's ability to accurately classify different types of lung cancer from CT scan images, showcasing its potential as a diagnostic aid tool.
+
+## Contributing
+
+Feel free to submit issues and enhancement requests!
 
 
-## Dataset
-
-The dataset must be organized as follows:
-```
-dataset/
-├── train/
-│   ├── normal/
-│   ├── adenocarcinoma_left.lower.lobe_T2_N0_M0_Ib/
-│   ├── large.cell.carcinoma_left.hilum_T2_N2_M0_IIIa/
-│   ├── squamous.cell.carcinoma_left.hilum_T1_N2_M0_IIIa/
-├── valid/
-│   ├── normal/
-│   ├── adenocarcinoma_left.lower.lobe_T2_N0_M0_Ib/
-│   ├── large.cell.carcinoma_left.hilum_T2_N2_M0_IIIa/
-│   ├── squamous.cell.carcinoma_left.hilum_T1_N2_M0_IIIa/
-├── test/
-    ├── normal/
-    ├── adenocarcinoma_left.lower.lobe_T2_N0_M0_Ib/
-    ├── large.cell.carcinoma_left.hilum_T2_N2_M0_IIIa/
-    ├── squamous.cell.carcinoma_left.hilum_T1_N2_M0_IIIa/
-```
-
----
- 
-## Dependencies
-
-Install the required libraries using:
-
-```bash
-pip install pandas numpy seaborn matplotlib scikit-learn tensorflow keras
-```
-
----
-## Project Structure
-```
-├── Lung_Cancer_Prediction.py  # python code with model training and evaluation
-├── README.md                     # Project documentation
-├── dataset/                      # Dataset with train/valid/test splits
-└── best_model.keras               # Saved best model weights
-```
