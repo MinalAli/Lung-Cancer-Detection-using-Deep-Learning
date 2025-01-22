@@ -23,6 +23,7 @@ pandas
 matplotlib
 seaborn
 scikit-learn
+keras
 ```
 
 ## Project Structure
@@ -55,7 +56,7 @@ scikit-learn
 1. Clone the repository
 2. Install the required dependencies:
 ```bash
-pip install tensorflow numpy pandas matplotlib seaborn scikit-learn
+pip install tensorflow numpy pandas matplotlib seaborn scikit-learn keras
 ```
 
 ## Dataset Organization
