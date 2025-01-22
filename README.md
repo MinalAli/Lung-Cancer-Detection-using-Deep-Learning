@@ -2,6 +2,9 @@
 
 This project implements a deep learning model for classifying different types of lung cancer using medical imaging data. The model utilizes transfer learning with the Xception architecture to classify lung CT scans into four categories: normal, adenocarcinoma, large cell carcinoma, and squamous cell carcinoma.
 
+https://github.com/user-attachments/assets/6e409069-101e-4e78-93ac-3d3d5796b1c2
+
+
 ## Table of Contents
 - [Dependencies](#dependencies)
 - [Project Structure](#project-structure)
