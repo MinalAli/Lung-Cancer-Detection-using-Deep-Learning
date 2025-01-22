@@ -162,10 +162,6 @@ The video shows:
 - Visualization of classification results
 - Performance metrics and accuracy scores
 
-## 4. Video Demonstration
-
-Here is a demonstration of the model in action:
-
 [Watch the video](https://youtu.be/xutlsjAK_io)
 
 The video demonstrates the model's ability to accurately classify different types of lung cancer from CT scan images, showcasing its potential as a diagnostic aid tool.
